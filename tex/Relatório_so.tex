@@ -1,0 +1,85 @@
+\documentclass[4apaper]{report}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage{a4wide}
+\title{Projeto de Sistemas Operativos}
+\author{Henrique José Carvalho Faria a82200\and José André Martins Pereira a82880 \and Ricardo André Petronilho a81744}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+No âmbito da Unidade Curricular de Sistemas Operativos (SO), do Mestrado integrado em Engenharia Informática da Universidade do Minho, foi nos proposto a elaboração de um projeto que consiste em construir um sistema de processamento de notebooks, que mistura fragmentos de código, resultados da execução, e documentação. Neste contexto, um notebook é um ficheiro de texto que depois de processado é modificado de modo a incorporar resultados da execução de código ou comandos nele contidos. Este trabalho foi realizado na linguagem C.
+\end{abstract}
+
+\tableofcontents
+
+\newpage
+
+\chapter{Introdução}
+\label{sec:introducao}
+
+O trabalho foi dívidido em duas fases:
+
+\begin{itemize}
+	\item Na primeira fase tratou-se da leitura do ficheiro notebook, e intrepertação dos dados.
+
+	\item A segunda fase passou por executar os respetivos comandos, podendo estes serem encadeados e por fim imprimir os seus outputs no ficheiro notebook.
+\end{itemize}
+
+\newpage
+
+\section{Funcionamento do Processador de notebooks}
+
+Inicialmente faz-se um check-out de toda a informação contida no ficheiro para um buffeer. Após o preenchimento desse buffer, faz-se o parser para a nossa estrutura, a razão desta estrutura foi para facilitar o tratamento dos dados, sendo esta composta por:
+\begin{verbatim}
+/**\brief estrutura que armazena um comando */
+typedef struct TCD_COMANDO{
+
+	char* comentario;
+	char* nome;
+	char** argumentos;
+	int encadeado;
+
+} TCD_COMANDO;
+
+/**\brief estrutura que armazena todos os comandos */
+typedef struct TCD_COMANDOS{
+
+	int dim;
+	int ocupados;
+	TCD_COMANDO* comandos;
+
+} TCD_COMANDOS;
+
+\end{verbatim}
+
+Onde o parâmetro \texttt{comentario} é o comentário referente a este comando, \texttt{nome} é nome do comando, \texttt{argumentos} são os argumentos do comando, \texttt{encadeado} verifica se o comando é encadeado com o anterior, \texttt{dim} é a dimensão da estrutura, \texttt{ocupados} é o número de comandos, \texttt{comandos} é o ponteiro que aponta para a estrutura \texttt{TCD\_COMANDO}. 
+
+Depois de termos o parser feito, percorremos a estrutura do comando na posição 0 até ao fim e para cada posição, invocamos a função execEncadeada, esta função distingue um comando não encadeado, de um encadeado consecutivo e de um encadeado não consecutivos guardando num array auxiliar por ordem inversa, encadeando dos comandos independentes do número de comandos ou de este serem consecutivos ou não. De seguida procedemos à criação de um processo filho para executar cada um dos comandos encadeados e guardar o output num pipe anónimo. 
+
+
+\subsection{Dificuldades:}
+
+Uma das dificuldades do trabalho foi a elaboração do parser do ficheiro notebook, visto que existem problemas de memória e raramente existem erros com a alocação. Tenta-mos resolver este problema de diversas formas, mas sem sucesso, devido à aproximação da data de entrega, não conseguimos colocar um parser 100\% funcional.
+
+\subsection{Estratégias}
+
+A estratégia inicial para facilitar a manipulação dos dados lidos pelo ficheiro foi a criação de uma estrutura que guarda os diferentes parâmetros de cada comando: comentário, nome do comando, argumentos e flag que indica se o comando é encadeado com outros. Isto vai facilitar, pois vai ser mais intuitivo para a leitura do código. Esta estrutura foi implementada como um tipo abstrato de dados, para que haja maior modularidade.
+
+\newpage
+
+\chapter{Conclusão}
+
+A realização deste projeto, propôs um grande desafio para o nosso grupo de trabalho tornando-se muito enriquecedor, pois desenvolvemos o raciocínio lógico e os métodos de trabalho.
+
+Terminado este trabalho, alcançou-se o objectivo inicial do projeto. 
+
+No decorrer do mesmo surgiram algumas dificuldades, como haveriamos de encadear os comandos, dificuldades essas que se foram dissipando, com aplicação dos conteúdos programáticos abordados nas aulas teóricas e o apoio indespensável dos docentes, como forma a ultrapassar e resolver todos os problemas surgidos.
+
+Sugerimos assim, a continuidade da realização destes projetos, como forma a desensolver espírito criativo e funcional indespensável à prática da nossa Profissão. 
+
+\end{document}
