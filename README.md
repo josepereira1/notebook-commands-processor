@@ -1,2 +1,2 @@
-# projeto-so
-Projeto de sistemas operativos
+# notebook-commands-processor
+Operating Systems project
